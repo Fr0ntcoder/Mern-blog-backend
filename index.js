@@ -69,7 +69,7 @@ app.patch(
   PostController.update
 );
 
-app.listen(3000, (err) => {
+app.listen(7777, (err) => {
   if (err) {
     console.log(err);
   }
