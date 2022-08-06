@@ -19,10 +19,46 @@ export const create = async (req, res) => {
     });
   }
 };
+export const getTag = async (req, res) => {
+  try {
+    const tagName = req.params.tagName;
+    const posts = await PostModel.find().filter((item) => {
+      const list = item.tags.some((el) => el === tagName);
+    });
 
+    /* const posts = await PostModel.find()
+      .sort({ createdAt: "desc", test: -1 })
+      .populate("author")
+      .exec(); */
+    res.json(posts);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Не удалось получить статьи!",
+    });
+  }
+};
 export const getAll = async (req, res) => {
   try {
-    const posts = await PostModel.find().populate("author").exec();
+    const posts = await PostModel.find()
+      .sort({ createdAt: "desc", test: -1 })
+      .populate("author")
+      .exec();
+    res.json(posts);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Не удалось получить статьи!",
+    });
+  }
+};
+
+export const getPopulate = async (req, res) => {
+  try {
+    const posts = await PostModel.find()
+      .sort({ viewsCount: "desc", test: -1 })
+      .populate("author")
+      .exec();
     res.json(posts);
   } catch (error) {
     console.log(error);
@@ -61,7 +97,7 @@ export const getOne = async (req, res) => {
 
         res.json(doc);
       }
-    );
+    ).populate("author");
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -126,6 +162,22 @@ export const update = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: "Не удалось обновить статью!",
+    });
+  }
+};
+
+export const getLastTags = async (req, res) => {
+  try {
+    const posts = await PostModel.find().limit(5).exec();
+    const tags = posts
+      .map((item) => item.tags)
+      .flat()
+      .slice(0, 5);
+    res.json(tags);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Не удалось получить теги!",
     });
   }
 };
