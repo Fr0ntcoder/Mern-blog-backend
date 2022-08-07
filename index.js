@@ -8,7 +8,7 @@ import { postCreateValidation } from "./validations/post.js";
 import { checkAuth, handleValidationError } from "./utils/index.js";
 
 mongoose
-  .connect("process.env.MONGO_DB_URL")
+  .connect(process.env.MONGO_DB_URL)
   .then(() => {
     console.log("DB ok");
   })
