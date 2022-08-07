@@ -8,9 +8,7 @@ import { postCreateValidation } from "./validations/post.js";
 import { checkAuth, handleValidationError } from "./utils/index.js";
 
 mongoose
-  .connect(
-    "mongodb+srv://admin:Errison2345@cluster0.lx2aq.mongodb.net/blog?retryWrites=true&w=majority"
-  )
+  .connect("process.env.MONGO_DB_URL")
   .then(() => {
     console.log("DB ok");
   })
@@ -72,7 +70,7 @@ app.patch(
   PostController.update
 );
 
-app.listen(7777, (err) => {
+app.listen(process.env.PORT || 7777, (err) => {
   if (err) {
     console.log(err);
   }
